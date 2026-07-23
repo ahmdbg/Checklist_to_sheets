@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Perlengkapan Kuliah — Checklist</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #111827;
+    --navy-soft: #4f46e5;
+    --paper: #f8fafc;
+    --paper-line: #e2e8f0;
+    --amber: #f59e0b;
+    --ink-red: #ef4444;
+    --sage: #10b981;
+    --ink: #0f172a;
+    --muted: #64748b;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #f8fafc 0%, #eef2ff 100%);
+    color: var(--ink);
+    font-family: 'Plus Jakarta Sans', 'IBM Plex Sans', sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 0 16px 80px;
+  }
+
+  /* ---------- HEADER / PACKING METER ---------- */
+  header {
+    background: linear-gradient(135deg, #111827 0%, #1f2937 100%);
+    color: #fff;
+    padding: 28px 20px 24px;
+    border-radius: 0 0 24px 24px;
+    margin-bottom: 24px;
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.12);
+  }
+
+  header .inner {
+    max-width: 680px;
+    margin: 0 auto;
+  }
+
+  .eyebrow {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #c7d2fe;
+    margin: 0 0 6px;
+  }
+
+  h1 {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 700;
+    font-size: clamp(28px, 4.5vw, 36px);
+    margin: 0 0 16px;
+    line-height: 1.15;
+  }
+
+  .meter-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+    color: #dbeafe;
+    margin-bottom: 8px;
+  }
+
+  .meter-track {
+    height: 10px;
+    background: rgba(255,255,255,0.16);
+    border-radius: 999px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .meter-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #818cf8, #10b981);
+    border-radius: 999px;
+    transition: width 0.5s cubic-bezier(.4,0,.2,1);
+    width: 0%;
+    box-shadow: 0 0 12px rgba(129, 140, 248, 0.28);
+  }
+
+  /* ---------- ADD FORM ---------- */
+  .add-form {
+    background: #fff;
+    border: 1px solid var(--paper-line);
+    border-radius: 20px;
+    padding: 16px;
+    margin-bottom: 24px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+  }
+
+  .add-form input, .add-form select {
+    font-family: inherit;
+    font-size: 14px;
+    padding: 12px 14px;
+    border: 1px solid var(--paper-line);
+    border-radius: 12px;
+    background: var(--paper);
+    color: var(--ink);
+    width: 100%;
+  }
+
+  .add-form input:focus, .add-form select:focus {
+    outline: 2px solid rgba(79, 70, 229, 0.24);
+    outline-offset: 1px;
+    border-color: #818cf8;
+  }
+
+  .add-form input[type="text"] { grid-column: 1 / -1; }
+
+  .add-form button {
+    grid-column: 1 / -1;
+    background: linear-gradient(135deg, #4f46e5 0%, #6366f1 100%);
+    color: #fff;
+    border: none;
+    border-radius: 999px;
+    padding: 12px;
+    font-family: inherit;
+    font-weight: 700;
+    font-size: 14px;
+    cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.15s, background 0.15s;
+    box-shadow: 0 8px 16px rgba(99, 102, 241, 0.22);
+  }
+
+  .add-form button:hover {
+    transform: translateY(-1px);
+    background: linear-gradient(135deg, #4338ca 0%, #4f46e5 100%);
+  }
+  .add-form button:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  /* ---------- CATEGORY SECTIONS ---------- */
+  .category {
+    margin-bottom: 18px;
+  }
+
+  .category-title {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 0 0 10px 4px;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: #fff;
+    border: 1px solid var(--paper-line);
+    border-radius: 16px;
+    padding: 12px 14px;
+    margin-bottom: 8px;
+    position: relative;
+    box-shadow: 0 3px 10px rgba(15, 23, 42, 0.03);
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+
+  .item:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 18px rgba(15, 23, 42, 0.06);
+  }
+
+  .checkbox {
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+    border-radius: 8px;
+    border: 2px solid #818cf8;
+    background: #fff;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.15s, background 0.15s, border-color 0.15s;
+  }
+
+  .checkbox:active { transform: scale(0.9); }
+
+  .checkbox svg {
+    opacity: 0;
+    transform: scale(0.4) rotate(-18deg);
+    transition: opacity 0.18s, transform 0.18s;
+  }
+
+  .item.done .checkbox {
+    background: var(--sage);
+    border-color: var(--sage);
+  }
+
+  .item.done .checkbox svg {
+    opacity: 1;
+    transform: scale(1) rotate(-8deg);
+  }
+
+  .item-name {
+    flex: 1;
+    font-size: 15px;
+    transition: color 0.15s, text-decoration-color 0.15s;
+  }
+
+  .item.done .item-name {
+    color: #94a3b8;
+    text-decoration: line-through;
+    text-decoration-color: var(--sage);
+    text-decoration-thickness: 2px;
+  }
+
+  .delete-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 10px;
+    border: 1px solid var(--paper-line);
+    background: #f8fafc;
+    color: var(--ink-red);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: background 0.15s, border-color 0.15s, color 0.15s;
+  }
+
+  .delete-btn:hover {
+    background: #fee2e2;
+    border-color: #fda4af;
+    color: #ef4444;
+  }
+
+  .empty-state {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--muted);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+  }
+
+  /* ---------- CONFIG BANNER ---------- */
+  .config-banner {
+    background: #fff7ed;
+    border: 1px solid #fdba74;
+    border-radius: 16px;
+    padding: 14px 16px;
+    margin-bottom: 22px;
+    font-size: 13px;
+    line-height: 1.5;
+    box-shadow: 0 6px 16px rgba(245, 158, 11, 0.12);
+  }
+
+  .config-banner input {
+    width: 100%;
+    margin-top: 8px;
+    padding: 9px 10px;
+    border-radius: 10px;
+    border: 1px solid var(--paper-line);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+  }
+
+  .config-banner button {
+    margin-top: 8px;
+    background: linear-gradient(135deg, #111827 0%, #1f2937 100%);
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    padding: 8px 14px;
+    font-size: 13px;
+    cursor: pointer;
+  }
+
+  .toast {
+    position: fixed;
+    bottom: 22px;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: #111827;
+    color: #fff;
+    padding: 11px 18px;
+    border-radius: 999px;
+    font-size: 13px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s, transform 0.25s;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    z-index: 50;
+    box-shadow: 0 10px 20px rgba(15, 23, 42, 0.18);
+  }
+
+  .toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  @media (max-width: 600px) {
+    .wrap {
+      padding: 0 14px 60px;
+    }
+
+    header {
+      padding: 24px 16px 22px;
+    }
+
+    .add-form {
+      grid-template-columns: 1fr;
+    }
+
+    .add-form button {
+      grid-column: auto;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="inner">
+    <p class="eyebrow">Sebelum Berangkat Kuliah</p>
+    <h1>Checklist Perlengkapan</h1>
+    <div class="meter-row">
+      <span id="meter-label">0 dari 0 barang siap</span>
+      <span id="meter-percent">0%</span>
+    </div>
+    <div class="meter-track">
+      <div class="meter-fill" id="meterFill"></div>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <div class="config-banner" id="configBanner" style="display:none;">
+    <strong>Sambungkan ke Google Sheets kamu</strong><br>
+    Tempel URL Web App dari Apps Script kamu di bawah ini (lihat panduan di file apps-script.gs).
+    <input type="text" id="scriptUrlInput" placeholder="https://script.google.com/macros/s/xxxx/exec">
+    <button id="saveUrlBtn">Sambungkan</button>
+  </div>
+
+  <form class="add-form" id="addForm">
+    <select id="kategoriInput">
+      <option value="Dokumen">Dokumen</option>
+      <option value="Elektronik">Elektronik</option>
+      <option value="Alat Tulis">Alat Tulis</option>
+      <option value="Perlengkapan Kamar">Perlengkapan Kamar</option>
+      <option value="Pakaian">Pakaian</option>
+      <option value="Makanan">Makanan</option>
+      <option value="Perlengkapan Dapur">Perlengkapan Dapur</option>
+      <option value="Lainnya">Lainnya</option>
+    </select>
+    <input type="text" id="namaInput" placeholder="Nama barang, mis. Laptop" required>
+    <button type="submit" id="addBtn">+ Tambah ke checklist</button>
+  </form>
+
+  <div id="listArea">
+    <div class="empty-state">Memuat data…</div>
+  </div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  // ============================================================
+  // GANTI URL DI BAWAH INI dengan URL Web App Apps Script kamu
+  // (lihat instruksi di file apps-script.gs)
+  // ============================================================
+  let SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzmtsxdWqHNwgK-bXFFibTtMegyVHgi_CdlijtObs0UYVx903n0--gkYwLuiOXzvK_9/exec";
+
+  const CATEGORY_ORDER = ["Dokumen", "Elektronik", "Alat Tulis", "Perlengkapan Kamar", "Pakaian", "Makanan", "Perlengkapan Dapur", "Lainnya"];
+
+  let items = [];
+
+  const listArea = document.getElementById("listArea");
+  const meterFill = document.getElementById("meterFill");
+  const meterLabel = document.getElementById("meter-label");
+  const meterPercent = document.getElementById("meter-percent");
+  const toast = document.getElementById("toast");
+  const configBanner = document.getElementById("configBanner");
+  const addForm = document.getElementById("addForm");
+  const addBtn = document.getElementById("addBtn");
+
+  function showToast(msg) {
+    toast.textContent = msg;
+    toast.classList.add("show");
+    setTimeout(() => toast.classList.remove("show"), 2200);
+  }
+
+  function isConfigured() {
+    return SCRIPT_URL && SCRIPT_URL.indexOf("PASTE_URL") === -1;
+  }
+
+  function checkConfig() {
+    if (!isConfigured()) {
+      configBanner.style.display = "block";
+      listArea.innerHTML = '<div class="empty-state">Sambungkan ke Google Sheets dulu di atas ⬆️</div>';
+      return false;
+    }
+    configBanner.style.display = "none";
+    return true;
+  }
+
+  document.getElementById("saveUrlBtn").addEventListener("click", function () {
+    const val = document.getElementById("scriptUrlInput").value.trim();
+    if (!val) return showToast("Isi URL dulu ya");
+    SCRIPT_URL = val;
+    showToast("Tersambung! Memuat data…");
+    checkConfig();
+    loadItems();
+  });
+
+  async function loadItems() {
+    if (!checkConfig()) return;
+    try {
+      const res = await fetch(SCRIPT_URL);
+      const data = await res.json();
+      if (!data.ok) throw new Error(data.error || "Gagal memuat");
+      items = data.items;
+      render();
+    } catch (err) {
+      listArea.innerHTML = '<div class="empty-state">Gagal memuat data. Cek URL Apps Script kamu.</div>';
+      console.error(err);
+    }
+  }
+
+  function render() {
+    // progress meter
+    const total = items.length;
+    const done = items.filter(i => i.selesai).length;
+    const pct = total === 0 ? 0 : Math.round((done / total) * 100);
+    meterFill.style.width = pct + "%";
+    meterLabel.textContent = done + " dari " + total + " barang siap";
+    meterPercent.textContent = pct + "%";
+
+    if (total === 0) {
+      listArea.innerHTML = '<div class="empty-state">Belum ada barang. Tambahkan lewat form di atas.</div>';
+      return;
+    }
+
+    // group by category, preserving known order then any extras
+    const groups = {};
+    items.forEach(i => {
+      if (!groups[i.kategori]) groups[i.kategori] = [];
+      groups[i.kategori].push(i);
+    });
+
+    const orderedCats = [
+      ...CATEGORY_ORDER.filter(c => groups[c]),
+      ...Object.keys(groups).filter(c => !CATEGORY_ORDER.includes(c))
+    ];
+
+    listArea.innerHTML = orderedCats.map(cat => {
+      const catItems = groups[cat];
+      const catDone = catItems.filter(i => i.selesai).length;
+      return `
+        <div class="category">
+          <p class="category-title"><span>${escapeHtml(cat)}</span><span>${catDone}/${catItems.length}</span></p>
+          ${catItems.map(itemRow).join("")}
+        </div>
+      `;
+    }).join("");
+
+    // wire up events
+    document.querySelectorAll(".checkbox").forEach(el => {
+      el.addEventListener("click", () => toggleItem(el.dataset.id));
+    });
+    document.querySelectorAll(".delete-btn").forEach(el => {
+      el.addEventListener("click", () => deleteItem(el.dataset.id));
+    });
+  }
+
+  function itemRow(item) {
+    return `
+      <div class="item ${item.selesai ? "done" : ""}">
+        <div class="checkbox" data-id="${item.id}">
+          <svg width="14" height="11" viewBox="0 0 14 11" fill="none">
+            <path d="M1 5.5L5 9.5L13 1.5" stroke="white" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <span class="item-name">${escapeHtml(item.nama)}</span>
+        <button class="delete-btn" data-id="${item.id}" aria-label="Hapus ${escapeHtml(item.nama)}">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <path d="M2 2L12 12M12 2L2 12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
+    `;
+  }
+
+  function escapeHtml(str) {
+    const d = document.createElement("div");
+    d.textContent = str;
+    return d.innerHTML;
+  }
+
+  async function postAction(payload) {
+    const res = await fetch(SCRIPT_URL, {
+      method: "POST",
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
+      body: JSON.stringify(payload)
+    });
+    return res.json();
+  }
+
+  async function toggleItem(id) {
+    const item = items.find(i => i.id === id);
+    if (!item) return;
+    const newState = !item.selesai;
+    item.selesai = newState; // optimistic update
+    render();
+    try {
+      await postAction({ action: "toggle", id, selesai: newState });
+    } catch (err) {
+      showToast("Gagal menyimpan, coba lagi");
+      item.selesai = !newState;
+      render();
+    }
+  }
+
+  async function deleteItem(id) {
+    const item = items.find(i => i.id === id);
+    if (!item) return;
+    if (!confirm('Hapus "' + item.nama + '" dari checklist?')) return;
+    const prevItems = items;
+    items = items.filter(i => i.id !== id);
+    render();
+    try {
+      await postAction({ action: "delete", id });
+      showToast("Barang dihapus");
+    } catch (err) {
+      showToast("Gagal menghapus, coba lagi");
+      items = prevItems;
+      render();
+    }
+  }
+
+  addForm.addEventListener("submit", async function (e) {
+    e.preventDefault();
+    if (!checkConfig()) return;
+    const nama = document.getElementById("namaInput").value.trim();
+    const kategori = document.getElementById("kategoriInput").value;
+    if (!nama) return;
+
+    addBtn.disabled = true;
+    addBtn.textContent = "Menambahkan…";
+    try {
+      const result = await postAction({ action: "add", nama, kategori });
+      if (result.ok) {
+        items.push({ id: result.id, nama, kategori, selesai: false, dibuatPada: new Date().toISOString() });
+        document.getElementById("namaInput").value = "";
+        render();
+        showToast("Barang ditambahkan");
+      } else {
+        showToast("Gagal menambahkan");
+      }
+    } catch (err) {
+      showToast("Gagal menambahkan, cek koneksi");
+    } finally {
+      addBtn.disabled = false;
+      addBtn.textContent = "+ Tambah ke checklist";
+    }
+  });
+
+  // init
+  checkConfig();
+  if (isConfigured()) loadItems();
+</script>
+
+</body>
+</html>
